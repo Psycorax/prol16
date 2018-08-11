@@ -1,0 +1,143 @@
+;; prol 16 - 16 bit multiplication
+;; 1/2018 Reisinger Thomas
+
+;; registers:
+;; r0   0 is stored in it
+;; r1   multiplicant
+;; r2 	multiplicator
+;; r3 	res_high
+;; r4 	res_low
+;; r5 	shifht-carry reg
+;; r6 	address reg
+;; r7 	and reg 
+
+equ prog_start, 0000h ; start address of program rom
+equ data_start, 8000h ; start address of data ram
+equ mem_dump_addr, 0FFFFh
+
+macro write_mem_dump
+    loadi r6, mem_dump_addr 
+    store r4, r6            ; dump memory to file
+endm
+
+org data_start
+mnt: db 4711
+mtor: db 4711
+res_high: db 0
+res_low: db 0
+padding: db 0,0,0,0
+param1: db 10,10,0,0,0,0,0,0
+param2: db 10,10,0,0,0,0,0,0
+param3: db 100,100,0,0,0,0,0,0
+param4: db 10,10,0,0,0,0,0,0
+param5: db 100,100,0,0,0,0,0,0
+param6: db 10,10,0,0,0,0,0,0
+param7: db 100,100,0,0,0,0,0,0
+param8: db 10,10,0,0,0,0,0,0
+param9: db 10,10,0,0,0,0,0,0
+param10: db 100,100,0,0,0,0,0,0
+param11: db 10,10,0,0,0,0,0,0
+param12: db 100,100,0,0,0,0,0,0
+param13: db 10,10,0,0,0,0,0,0
+param14: db 100,100,0,0,0,0,0,0
+param15: db 100,100,0,0,0,0,0,0
+param16: db 500,500,0,0,0,0,0,0
+
+org offset_start
+count : db 16 
+offset: db 0
+
+org prog_start
+	
+    loadi r0, 0             
+
+MultiLoop: 
+	
+	loadi r1, 0
+	loadi r2, 0
+	loadi r3, 0
+	loadi r4, 0
+	loadi r5, 0
+	loadi r6, 0
+	loadi r7, 0
+	
+	loadi r6, offset
+	load  r5, r6
+	
+	loadi r6, mnt
+	add   r6, r5
+	load  r1, r6
+	
+	
+	loadi r6, mtor
+	add   r6, r5
+	load  r2, r6
+	
+	
+	; result register low and high
+	loadi r6, res_high
+	add   r6, r5
+	load  r3, r6
+	
+	
+	loadi r6, res_low
+	add   r6, r5
+	load  r4, r6
+	
+	; tmp register for shift
+	loadi r5, 0
+	
+
+AndCheck:
+	loadi r7, 1
+	and   r7, r1
+	loadi r6, Shift
+	jumpz r6
+
+TmpResult:
+	add  r4, r2
+	addc r3, r5
+
+Shift:	
+	shl  r2
+	shlc r5
+	shr  r1
+	comp r1, r0
+	loadi r6, StoreResult
+	jumpz r6
+	loadi r6, AndCheck
+	jump r6
+	
+StoreResult:
+        loadi r6, offset
+	load r5, r6
+	
+	loadi r6, res_high
+	add  r6, r5
+	store r3, r6
+	
+	loadi r6, res_low
+	add  r6,r5
+	store r4, r6
+	
+	loadi r1, 8
+	add  r5, r1
+	
+	loadi r6, offset
+	store r5,r6
+	
+	loadi r6, count
+	load r1, r6
+	dec  r1
+	store r1, r6
+	comp r1, r0
+	
+	loadi r6, done
+	jumpz r6
+	loadi r6, MultiLoop
+	jump r6 
+
+done:	
+   loadi r4, data_start
+   write_mem_dump
+   sleep

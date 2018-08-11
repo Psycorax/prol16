@@ -1,0 +1,51 @@
+Thomas Reisinger
+CHD5_UE03
+13.11.2017
+
+* Synthese mit constraints
+** Operating Conditions
+   Operating Condition Name : WORST
+   Library : c35_CORELIB
+   Process :   1.40
+   Temperature :  75.00
+   Voltage :   3.00
+   Interconnect Model : balanced_tree
+
+   Operating Condition Name : TYPICAL
+   Library : c35_CORELIB
+   Process :   1.00
+   Temperature :  25.00
+   Voltage :   3.30
+   Interconnect Model : balanced_tree
+
+   Operating Condition Name : BEST
+   Library : c35_CORELIB
+   Process :   0.64
+   Temperature :   0.00
+   Voltage :   3.60
+   Interconnect Model : balanced_tree
+
+** Constraints
+   von entwickler entschieden -> gutes mittel von area und timing mehr
+   power wenn sonnst grenzen überschritten
+*** optimization constraints:
+    timing constraints
+    area constraints
+    power constraints
+
+*** von hardware vorgegeben design constraints:
+    transition time (zeitfür wechsel eines pin pegels)
+    fanout (wie viele Gatter getrieben werden können von einem Gatter)
+    capacitance (Kapazität welche maximal an einen outputpin gehängt werden kann)
+
+* Post_Syn_Sim
+** Entitys in netlist_alu.vhd
+   adder und alu
+
+** lib einben in modelsim.ini
+   c35_CORELIB = $AMS_DIR/vital/c35/modelsim/c35_corelib
+
+** Unterschid inkl Timings
+   Die Gatter haben nun timings und sind nicht mehr unendlich schnell auch in der waveform erkennbar
+
+

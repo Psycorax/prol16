@@ -1,0 +1,46 @@
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : spikefilter_5
+Version: K-2015.06-SP4
+Date   : Mon Nov 27 17:23:43 2017
+****************************************
+
+Operating Conditions: WORST   Library: c35_CORELIB
+Wire Load Model Mode: enclosed
+
+  Startpoint: Level_reg (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: Level_reg (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  spikefilter_5      10k                   c35_CORELIB
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              1.00       1.00
+  Level_reg/C (DFC1)                       0.00       1.00 r
+  Level_reg/Q (DFC1)                       1.24       2.24 f
+  U8/Q (MAJ31)                             0.65       2.89 f
+  Level_reg/D (DFC1)                       0.00       2.89 f
+  data arrival time                                   2.89
+
+  clock clk_i (rise edge)                 62.50      62.50
+  clock network delay (ideal)              1.00      63.50
+  clock uncertainty                       -0.20      63.30
+  Level_reg/C (DFC1)                       0.00      63.30 r
+  library setup time                       0.00      63.30
+  data required time                                 63.30
+  -----------------------------------------------------------
+  data required time                                 63.30
+  data arrival time                                  -2.89
+  -----------------------------------------------------------
+  slack (MET)                                        60.41
+
+

@@ -1,0 +1,30 @@
+ 
+****************************************
+Report : area
+Design : control
+Version: K-2015.06-SP4
+Date   : Tue Dec 12 09:54:03 2017
+****************************************
+
+Library(s) Used:
+
+    c35_CORELIB (File: /eda/ams/synopsys/c35_3.3V/c35_CORELIB.db)
+
+Number of ports:                           26
+Number of nets:                            98
+Number of cells:                           86
+Number of combinational cells:             81
+Number of sequential cells:                 5
+Number of macros/black boxes:               0
+Number of buf/inv:                         22
+Number of references:                      17
+
+Combinational area:               4859.400055
+Buf/Inv area:                      800.800034
+Noncombinational area:            1583.399963
+Macro/Black Box area:                0.000000
+Net Interconnect area:            1962.000000
+
+Total cell area:                  6442.800018
+Total area:                       8404.800018
+1

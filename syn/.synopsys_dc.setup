@@ -1,0 +1,15 @@
+#
+# .synopsys_dc.setup (TCL-Version)
+#
+
+# source global settings
+
+set ASE5_HOME [getenv ASE5_HOME]
+set synopsys_dc_setup_global $ASE5_HOME/etc/synopsys_dc.setup.tcl
+
+if { [file readable $synopsys_dc_setup_global] } {
+	echo "Sourcing global setup file"
+     	source $synopsys_dc_setup_global
+}
+
+# your individual settings here

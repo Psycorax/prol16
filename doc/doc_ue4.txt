@@ -1,0 +1,29 @@
+1.1) Timing Violation: In der Simulation bleiben die Flipflops
+	metastabil, weil keine Umwelteinflüsse auf die Flipflops
+	einwirken. In der realen Welt werden durch die Umwelteinflüsse
+	die Flipflops entweder auf 1 oder 0 fallen.
+
+1.3)
+	Critischer Pfad: 2.89131ns
+	Setup Zeit: 0.008 ns
+	    2.89131  ns
+	   +0.008 ns
+	   _________
+	    2.89931 ns
+	    Frequenz = 1/2.89931ns
+	    
+3.)
+Totale Funktion: Funktion wo für jeden Eingang ein Ausgang
+definiert ist.
+
+Werden nicht alle möglichen Zustände definiert, so entstehen Latches
+in der Synthese, weil Werte gespeichert werden müssen.
+
+kombinatorischer Prozess: Grundsätzlich müssen alle Eingangs-Signale
+und auch rückgekoppelte Signale in der Sensitivitylist stehen, damit
+bei änderrungen immer sofort eine neuberechnung des Ausgangs
+durchgeführt wird.
+
+sequentieller Prozess: Es dürfen nur Clock und asynchroner Reset in
+der Sensitivitylist stehen -> dadurch wird nur bei einer Taktflanke
+bzw. Reset eine Aktion ausgeführt.

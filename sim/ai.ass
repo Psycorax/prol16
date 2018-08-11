@@ -1,0 +1,7 @@
+org 0
+    loadi r0, 1
+    loadi r1, 2
+    add   r0, r1
+    inc   r0
+    ; r0 should be 4
+    sleep

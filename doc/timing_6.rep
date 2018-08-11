@@ -1,0 +1,55 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : control
+Version: K-2015.06-SP4
+Date   : Tue Dec 12 09:54:03 2017
+****************************************
+
+Operating Conditions: WORST   Library: c35_CORELIB
+Wire Load Model Mode: enclosed
+
+  Startpoint: R_regxSTATExx1x
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: R_regxCARRYx
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  control            10k                   c35_CORELIB
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_i (rise edge)                  0.00       0.00
+  clock network delay (ideal)              1.00       1.00
+  R_regxSTATExx1x/C (DFC1)                 0.00       1.00 r
+  R_regxSTATExx1x/QN (DFC1)                1.57       2.57 r
+  U124/Q (NOR21)                           0.49       3.06 f
+  U97/Q (NAND22)                           0.68       3.74 r
+  U95/Q (INV3)                             0.31       4.05 f
+  U126/Q (NAND41)                          0.75       4.80 r
+  U125/Q (INV3)                            0.27       5.06 f
+  U129/Q (OAI2111)                         0.65       5.71 r
+  U11/Q (OAI212)                           0.12       5.84 f
+  R_regxCARRYx/D (DFC1)                    0.00       5.84 f
+  data arrival time                                   5.84
+
+  clock clk_i (rise edge)                 62.50      62.50
+  clock network delay (ideal)              1.00      63.50
+  clock uncertainty                       -0.20      63.30
+  R_regxCARRYx/C (DFC1)                    0.00      63.30 r
+  library setup time                       0.00      63.30
+  data required time                                 63.30
+  -----------------------------------------------------------
+  data required time                                 63.30
+  data arrival time                                  -5.84
+  -----------------------------------------------------------
+  slack (MET)                                        57.46
+
+
+1

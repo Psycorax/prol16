@@ -1,0 +1,61 @@
+;; gcd calculation
+;; 1/2003 markus lindorfer
+
+;; registers:
+;; r0     is always 0
+;; r1-r3  won't be changed during sub calls
+;; r4, r5 hold sub parameters
+;; r6, r7 are temp registers
+
+equ prog_start, 0000h ; start address of program rom
+equ data_start, 8000h ; start address of data ram
+equ mem_dump_addr, 0ffffh
+
+macro write_mem_dump
+
+    loadi r6, mem_dump_addr 
+    store r4, r6            ; dump memory to file
+
+endm
+
+org data_start
+in1: db 81
+in2: db 57
+res: db 0
+
+org prog_start
+
+    loadi r0, 0             ; don't use xor r0, r0!
+                            ; this may not work in all models
+    ;; load registers
+    loadi r6, in1
+    load  r1, r6
+    loadi r6, in2
+    load  r2, r6
+
+    ;; check the larger value is in r1
+loop:
+    comp r2, r1
+    loadi r6, no_xchg
+    jumpc r6
+    move r6, r1             ; xchange r1 & r2
+    move r1, r2
+    move r2, r6
+
+    ;; check termination condition
+no_xchg:
+    comp r2, r0
+    loadi r6, done
+    jumpz r6
+
+    sub r1, r2              ; substract and loop again
+    loadi r6, loop
+    jump r6
+
+    ;; store result and stop simulation
+done:
+   loadi r6, res
+   store r1, r6
+   loadi r4, data_start
+   write_mem_dump
+   sleep

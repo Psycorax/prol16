@@ -1,0 +1,77 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : datapath
+Version: K-2015.06-SP4
+Date   : Thu Dec  7 11:25:09 2017
+****************************************
+
+Operating Conditions: WORST   Library: c35_CORELIB
+Wire Load Model Mode: enclosed
+
+  Startpoint: reg_tmp_rb_regx0x
+              (rising edge-triggered flip-flop clocked by clk_i)
+  Endpoint: registerFile/regs_regx0xx15x
+            (rising edge-triggered flip-flop clocked by clk_i)
+  Path Group: clk_i
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  datapath           10k                   c35_CORELIB
+  alu_16             10k                   c35_CORELIB
+  alu_16_DW01_add_0  10k                   c35_CORELIB
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_i (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             1.00       1.00
+  reg_tmp_rb_regx0x/C (DFC3)                              0.00       1.00 r
+  reg_tmp_rb_regx0x/Q (DFC3)                              1.17       2.17 f
+  ALU/side_b_i(0) (alu_16)                                0.00       2.17 f
+  ALU/U120/Q (INV3)                                       0.43       2.60 r
+  ALU/U121/Q (OAI2111)                                    0.40       2.99 f
+  ALU/add_26_C79/B(1) (alu_16_DW01_add_0)                 0.00       2.99 f
+  ALU/add_26_C79/U1_1/CO (ADD32)                          1.09       4.08 f
+  ALU/add_26_C79/U1_2/CO (ADD32)                          0.65       4.72 f
+  ALU/add_26_C79/U1_3/CO (ADD32)                          0.65       5.37 f
+  ALU/add_26_C79/U1_4/CO (ADD32)                          0.65       6.02 f
+  ALU/add_26_C79/U1_5/CO (ADD32)                          0.65       6.66 f
+  ALU/add_26_C79/U1_6/CO (ADD32)                          0.65       7.31 f
+  ALU/add_26_C79/U1_7/CO (ADD32)                          0.65       7.95 f
+  ALU/add_26_C79/U1_8/CO (ADD32)                          0.65       8.60 f
+  ALU/add_26_C79/U1_9/CO (ADD32)                          0.65       9.25 f
+  ALU/add_26_C79/U1_10/CO (ADD32)                         0.65       9.89 f
+  ALU/add_26_C79/U1_11/CO (ADD32)                         0.65      10.54 f
+  ALU/add_26_C79/U1_12/CO (ADD32)                         0.65      11.18 f
+  ALU/add_26_C79/U1_13/CO (ADD32)                         0.65      11.83 f
+  ALU/add_26_C79/U1_14/CO (ADD32)                         0.65      12.48 f
+  ALU/add_26_C79/U1_15/CO (ADD32)                         0.65      13.12 f
+  ALU/add_26_C79/U1_16/S (ADD32)                          0.80      13.93 r
+  ALU/add_26_C79/SUM(16) (alu_16_DW01_add_0)              0.00      13.93 r
+  ALU/U270/Q (AOI220)                                     0.25      14.17 f
+  ALU/U276/Q (NAND40)                                     1.59      15.76 r
+  ALU/result_o(15) (alu_16)                               0.00      15.76 r
+  U178/Q (AOI220)                                         0.38      16.14 f
+  U177/Q (INV3)                                           0.91      17.05 r
+  registerFile/reg_i(15) (reg_file_8)                     0.00      17.05 r
+  registerFile/regs_regx0xx15x/D (DFEC1)                  0.00      17.05 r
+  data arrival time                                                 17.05
+
+  clock clk_i (rise edge)                                62.50      62.50
+  clock network delay (ideal)                             1.00      63.50
+  clock uncertainty                                      -0.20      63.30
+  registerFile/regs_regx0xx15x/C (DFEC1)                  0.00      63.30 r
+  library setup time                                     -0.19      63.11
+  data required time                                                63.11
+  --------------------------------------------------------------------------
+  data required time                                                63.11
+  data arrival time                                                -17.05
+  --------------------------------------------------------------------------
+  slack (MET)                                                       46.06
+
+
+1

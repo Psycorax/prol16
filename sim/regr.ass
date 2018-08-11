@@ -1,0 +1,352 @@
+;; regression test
+;; 1/2018 Thomas Reisinger
+
+;; r0: Used for tests
+;; r1: Used for tests
+;; r2: Used for tests
+;; r3: Used for tests
+;; r4: Not USED
+;; r5: Test counter
+;; r6: Address for valid label
+;; r7: Address for error label
+
+;;----------------------------------------
+;;	testoverview
+;;----------------------------------------
+;; nop_c	: tests done
+;; sleep_c	: tests done
+;; loadi_c	: tests done
+;; load_c	: tests done
+;; store_c	: tests done
+;; jump_c	: tests done
+;; jumpc_c	: tests done
+;; jumpz_c	: tests done
+;; move_c	: tests done
+;; and_c	: tests done
+;; or_c		: tests done
+;; xor_c	: tests done
+;; not_c	: tests done
+;; add_c	: tests done
+;; addc_c	: tests done
+;; sub_c	: tests done
+;; subc_c	: tests done
+;; comp_c	: tests done
+;; inc_c	: tests done
+;; dec_c	: tests done
+;; shl_c	: tests done
+;; shr_c	: tests done
+;; shlc_c	: tests done
+;; shrc_c	: tests done
+;; ----------------------------------------
+
+equ prog_start,    00000h ; start address of program rom
+equ data_start,    08000h ; start address of data ram
+equ mem_dump_addr, 0FFFFh
+	
+org data_start
+test_store: 	db 0A321h	; area to test store
+
+org prog_start
+
+;;----------------------------------------
+;; setup reg counter r6 and error reg r7
+;;----------------------------------------
+
+  loadi r5, 0
+  loadi r7, error
+
+;;----------------------------------------
+;; nop must be tested by itself
+;;----------------------------------------
+
+  nop
+  nop
+  
+;;----------------------------------------
+;; test 1: check comp(equal smaller bigger)
+;;----------------------------------------
+  inc   r5
+  loadi r0, 0FFFFh 
+  loadi r1, 0FFFEh 
+  comp r0, r1 		; delete carry and delete zero
+  jumpz r7
+  inc r1 
+  comp r0, r1 		; set zero and still deleted carry
+  dec r0
+  jumpc r7
+  comp r0, r1		; set carry and delete zero
+  jumpz r7 
+
+;;----------------------------------------
+;; test 2: jump tests
+;;----------------------------------------
+  inc   r5
+  loadi r1, 00001h
+  loadi r0, 00001h
+  comp  r1, r0		; equal -> not carry and zero
+  jumpc r7
+  loadi r6, valid_jump1
+  jump  r6
+  jump  r7
+valid_jump1:
+  loadi r6, valid_jump2
+  loadi r0, 00000h
+  comp r0, r1		; carry is 1 zero is 0
+  jumpz r7
+  jump r6
+  jump r7
+valid_jump2:
+  loadi r6, jumps_successfull
+  jumpc r6
+  jump r7
+jumps_successfull:
+
+;;----------------------------------------
+;; test 3: store and load test
+;;----------------------------------------
+  inc   r5
+  loadi r0, 051C0h
+  loadi r3, test_store
+  loadi r6, store_successfull
+  store r0, r3
+  load  r1, r3
+  comp  r0, r1
+  jumpz r6
+  jump  r7
+store_successfull:
+
+;;----------------------------------------
+;; test 4: move test
+;;----------------------------------------
+  inc   r5
+  loadi r0, 0AAAAh
+  loadi r1, 0BBBBh
+  loadi r6, move_successfull
+  move  r1, r0
+  comp  r0, r1
+  jumpz r6
+  jump  r7
+move_successfull:
+
+;;----------------------------------------
+;; test 5: and tests
+;;----------------------------------------
+  inc   r5
+  loadi r6, and_successfull
+  loadi r0, 00001h
+  loadi r1, 0FFFFh
+  and   r1, r0
+  jumpz r7
+  jumpc r7
+  comp  r0, r1
+  jumpz r6
+  jump  r7
+and_successfull:
+
+
+;;----------------------------------------
+;; test 6: or, dec tests
+;;----------------------------------------
+  inc   r5
+  loadi r6, or_successfull
+  loadi r0, 00001h
+  loadi r1, 0FFFFh
+  loadi r2, 0FFFFh
+  dec   r1
+  comp  r1, r2
+  jumpz r7
+  or    r1, r0
+  jumpz r7
+  jumpc r7
+  comp  r2, r1
+  jumpz r6
+  jump  r7
+or_successfull:
+
+
+;;----------------------------------------
+;; test 7: xor, not tests
+;;----------------------------------------
+  inc r5
+  loadi r6, xor_not_sf
+  loadi r0, 0FFFFh
+  loadi r1, 0AAAAh
+  loadi r2, 0AAAAh
+  xor   r0, r1
+  jumpz r7
+  jumpc r7
+  not   r2
+  jumpz r7
+  jumpc r7
+  comp  r2, r0
+  jumpc r7
+  jumpz r6
+  jump  r7
+xor_not_sf:
+
+
+;;----------------------------------------
+;; test 8: shl, shr tests
+;;----------------------------------------
+  inc r5
+  loadi r6, shl_c_sf
+  loadi r0, 00001h
+  loadi r1, 08000h
+  loadi r2, 00001h
+  loadi r3, 08000h
+  shl   r0
+  jumpc r7
+  jumpz r7
+  shr   r1
+  jumpc r7
+  jumpz r7
+  shl   r3
+  jumpc r6
+  jump  r7
+shl_c_sf:
+  loadi r6, shl_z_sf
+  jumpz r6
+  jump  r7
+shl_z_sf:
+  loadi r6, shr_c_sf
+  shr   r2
+  jumpc r6
+  jump  r7
+shr_c_sf:
+  loadi r6, shr_z_sf
+  jumpz r6
+  jump  r7
+shr_z_sf:
+  loadi r6, shift_z_sf
+  comp  r2, r3
+  jumpz r6
+  jump  r7
+shift_z_sf:
+  loadi r6, shift_c_sf
+  jumpc r7
+  jump  r6
+shift_c_sf:
+
+;;----------------------------------------
+;; test 9: shlc, shrc tests
+;;----------------------------------------
+  inc   r5
+  loadi r6, shlc_done
+  loadi r0, 00000h
+  loadi r1, 00000h
+  loadi r2, 08000h
+  loadi r3, 00001h
+  shl   r2            ; c = 1, z = 1
+  shlc  r0
+  comp  r0, r3        ; c = 0, z = 1
+  jumpc r7
+  jumpz r6
+  jump  r7
+shlc_done:
+  loadi r6, shrc_done
+  shr   r3	     ; c = 1, z = 1
+  shrc  r1
+  loadi r2, 08000h
+  comp  r1, r2	     ; c = 0, z = 1
+  jumpc r7
+  jumpz r6
+  jump  r7
+shrc_done:
+
+;;----------------------------------------
+;; test 10: add tests, by inc
+;;----------------------------------------
+  inc   r5
+  loadi r6, add_done
+  loadi r0, 07FFDh
+  loadi r1, 07FFDh
+  loadi r2, 00003h
+  inc   r1
+  inc   r1
+  inc   r1
+  add   r0, r2
+  comp  r0, r1
+  jumpc r7
+  jumpz r6
+  jump  r7
+add_done:
+
+;;----------------------------------------
+;; test 11: add tests, by inc, with c = 1
+;;----------------------------------------
+  inc   r5
+  loadi r6, add2_done
+  loadi r0, 07FFDh
+  loadi r1, 07FFDh
+  loadi r2, 00002h
+  loadi r3, 08000h
+  inc   r1
+  inc   r1
+  inc   r1
+  shl   r3         ; set c = 1
+  addc  r0, r2
+  comp  r0, r1
+  jumpc r7
+  jumpz r6
+  jump  r7
+add2_done:
+
+;;----------------------------------------
+;; test 12: sub tests, by dec
+;;----------------------------------------
+  inc   r5
+  loadi r6, sub_done
+  loadi r0, 07FF1h
+  loadi r1, 07FF1h
+  loadi r2, 00003h
+  dec   r1
+  dec   r1
+  dec   r1
+  sub   r0, r2
+  comp  r0, r1
+  jumpc r7
+  jumpz r6
+  jump  r7
+sub_done:
+
+;;----------------------------------------
+;; test 13: sub tests, by dec, with c = 1
+;;----------------------------------------
+  inc   r5
+  loadi r6, sub2_done
+  loadi r0, 07FF1h
+  loadi r1, 07FF1h
+  loadi r2, 00002h
+  loadi r3, 08000h
+  dec   r1
+  dec   r1
+  dec   r1
+  shl   r3         ; set c = 1
+  subc  r0, r2
+  comp  r0, r1
+  jumpc r7
+  jumpz r6
+  jump  r7
+sub2_done:
+
+
+
+
+;;----------------------------------------
+;; test 14: all done go sleep
+;;----------------------------------------
+  inc   r5
+  sleep
+  jump  r7
+
+
+;;----------------------------------------
+;; error label,jump here,
+;; if something is not successfull
+;; no sleep, stick in loop
+;;----------------------------------------
+error:
+  loadi r6, error_loop
+error_loop:
+  jump  r6
+

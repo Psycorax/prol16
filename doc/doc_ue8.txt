@@ -1,0 +1,14 @@
+Thomas Reisinger
+CHD5_UE08
+25.01.2018
+
+SUPPRESSES:
+3240..........suppressible no generic name
+3569..........suppressible spy signals
+1954..........suppressible as well spy signals with netlist
+8683..........no initial value, in generell not needed for syn
+
+Warnings:
+warnings are from memory.vhd file
+meta values at start are ok
+-novopt is used for sim

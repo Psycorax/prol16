@@ -1,0 +1,72 @@
+Thomas Reisinger
+CHD5_UE02_ALU
+06.11.2017
+
+* Testfälle
+** 000
+   invalid input -> garbage in garbage out
+
+** 001 - 002
+   check pass a
+   check pass b
+   check zero and carry flags
+
+** Logic Operators 003-008
+   check a and b
+   check a or b
+   check a xor b
+   not a
+   check zero flag
+   carry always has to be 0
+
+** a + b + cin 009-016
+   check garbage in garbage out
+   check 0x5555 + 0xAAAA + 0 = 0xFFFF
+   check 0 + 0 + 0
+   check 0 + 0 + 1
+   check 1 + (max-1) + 0
+   check 1 + max + 0 -> zeroflag = 1!!!
+   check max + max + 0
+   check max + max + 1
+   
+** a - b - cin 017-024
+   check garbage in garbage out
+   check 0 - 0 - 0 -> carryflag = 1!!!
+   check max - max - 0 -> carryflag = 1!!!
+   check 0 - 0 - 1
+   check -1 - -1 - 1
+   check 100 - 99 - 0
+   check 100 - 99 - 1
+   check 99 - 100 - 0
+   check 99 - 100 - 1
+
+** a + 1 025-27
+   check max + 1
+   check 0 + 1
+   check 0 + 1 "the carry is 1, should not change the result"
+
+** a - 1 028-030
+   check max - 1
+   check 0 - 1
+   check 0 - 1 "the carry is 1, should not change the result"
+
+** a << 1 031-033
+   check 1000 0000 0000 0000 << 1 = 0 carry = 1 zero = 1
+   same just with cin = 1, should not change the result
+   check 0 << 1
+
+** a >> 1 034-036
+   check 0000 0000 0000 0001 >> 1 = 0 carry = 1 zero = 1
+   same just with cin = 1, should not change the result
+   check 0 >> 1
+
+* Operating Conditions
+  The Operating Conditions must be set before compiling in synthesis.
+
+* Designware Components (DW)
+  One adder is built in. Because of the procedure call.
+
+* report_area, report report_timing
+  see files in doc folder:
+  area_2.rep   	   -> area   = 29636.800049µm^2
+  timing_2.rep	   -> timing = 18.23ns
